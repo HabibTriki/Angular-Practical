@@ -1,9 +1,36 @@
 <div class="row">
   <div class="col">
+    <app-autocomplete></app-autocomplete>
     <div class="alert alert-warning">
-      {{ date | date : "full" | uppercase }}
+      {{ date | date: "full" | uppercase }}
     </div>
-    <app-list [cvs]="cvs | async"></app-list>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a 
+          class="nav-link" 
+          [class.active]="activeTab === 'juniors'" 
+          (click)="setActiveTab('juniors')">
+          Juniors
+        </a>
+      </li>
+      <li class="nav-item">
+        <a 
+          class="nav-link" 
+          [class.active]="activeTab === 'seniors'" 
+          (click)="setActiveTab('seniors')">
+          Seniors
+        </a>
+      </li>
+    </ul>
+
+    <div [ngSwitch]="activeTab">
+      <ng-container *ngSwitchCase="'juniors'">
+        <app-list [cvs]="juniors$ | async"></app-list>
+      </ng-container>
+      <ng-container *ngSwitchCase="'seniors'">
+        <app-list [cvs]="seniors$ | async"></app-list>
+      </ng-container>
+    </div>
   </div>
   <div class="col">
     <app-cv-card [cv]="selectedCv | async"></app-cv-card>

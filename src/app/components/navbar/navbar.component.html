@@ -51,6 +51,12 @@
                   >
                   <a
                     class="nav-link"
+                   [routerLink]="['/products']"
+                   routerLinkActive="active text-primary"
+                   >Products</a
+                    >
+                  <a
+                    class="nav-link"
                     [routerLink]="['word']"
                     routerLinkActive="active text-primary"
                     >Word</a
@@ -59,7 +65,7 @@
                       class="nav-link"
                       [routerLink]="['admin', 'color']"
                       routerLinkActive="active text-primary"
-                      >Color</a
+                      >Color</a 
                       >
                       <a
                         class="nav-link"
