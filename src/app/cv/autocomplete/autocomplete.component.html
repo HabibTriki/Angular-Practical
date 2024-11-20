@@ -1,3 +1,23 @@
-<form [formGroup]="form">
-  <input type="text" class="form-control" formControlName="search" />
-</form>
+<div class="autocomplete">
+  <input
+    [formControl]="searchControl"
+    type="text"
+    placeholder="Search CVs..."
+    class="form-control"
+  />
+
+  <ul class="list-group" *ngIf="filteredCvs$ | async as cvs">
+    <li
+      class="list-group-item d-flex align-items-center"
+      *ngFor="let cv of cvs"
+      (click)="onSelectCv(cv)"
+    >
+    <img [ngStyle]="{
+      width: '50px',
+      heigth: '50px'
+    }" class="rounded-circle" src="assets/images/{{cv.path | defaultImage}}" alt="{{cv.name}}">
+
+      <span>{{ cv.firstname }} {{ cv.name }}</span>
+    </li>
+  </ul>
+</div>
