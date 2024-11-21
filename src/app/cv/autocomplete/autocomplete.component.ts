@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Observable, of, switchMap, debounceTime, distinctUntilChanged, filter, map, catchError } from 'rxjs';
+import { Observable, of, switchMap, debounceTime, distinctUntilChanged, filter, catchError } from 'rxjs';
 import { CvService } from '../services/cv.service';
 import { Cv } from '../model/cv';
 import { Router } from '@angular/router';
@@ -46,7 +46,7 @@ export class AutocompleteComponent {
     const filterString = JSON.stringify(filter);
     return this.cvService.getCvs(filterString);
   }
-  
+
 
   onSelectCv(cv: Cv) {
     this.router.navigate(['/cv', cv.id]);

@@ -13,9 +13,15 @@ import { CvComponent } from "./cv/cv/cv.component";
 import { DetailsCvComponent } from "./cv/details-cv/details-cv.component";
 import { RhComponent } from "./optimizationPattern/rh/rh.component";
 import { ProductsComponent } from "./products/products.component";
+import {MasterDetailsCvComponent} from "./master-details-cv/master-details-cv.component";
 
 
 const routes: Route[] = [
+  { path: "cv/list", component: MasterDetailsCvComponent,
+    children: [
+      { path: ':id', component: DetailsCvComponent},
+    ]
+  },
   { path: "login", component: LoginComponent },
   { path: "rh", component: RhComponent },
   {

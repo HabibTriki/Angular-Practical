@@ -58,7 +58,6 @@ export class CvComponent {
     this.seniors$ = this.cvs$.pipe(
       map(cvs => cvs.filter(cv => cv.age >= 40))
     );
-
     this.toastr.info("Bienvenue dans notre CvTech");
     this.selectedCv = this.cvService.selectCv$;
   }
