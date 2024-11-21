@@ -5,9 +5,8 @@ import {CvCardComponent} from "../cv/cv-card/cv-card.component";
 import {EmbaucheComponent} from "../cv/embauche/embauche.component";
 import {ListComponent} from "../cv/list/list.component";
 import {CvService} from "../cv/services/cv.service";
-import {catchError, Observable, of, shareReplay} from "rxjs";
+import {Observable, of} from "rxjs";
 import {Cv} from "../cv/model/cv";
-import {ToastrService} from "ngx-toastr";
 import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
 
 @Component({
@@ -29,31 +28,24 @@ import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
 })
 export class MasterDetailsCvComponent {
   private cvService = inject(CvService);
-  private toastr = inject(ToastrService);
   private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
+  private route = inject(ActivatedRoute);
 
   cvs$: Observable<Cv[]>;
   selectedCv: Cv | null = null;
 
   constructor() {
     // Fetching the list of CVs
-    this.cvs$ = this.cvService.getCvs().pipe(
-      shareReplay(1),
-      catchError((e) => {
-        console.error('Error fetching CVs:', e);
-        this.toastr.error(`
-          Attention!! Les données sont fictives, problème avec le serveur.
-          Veuillez contacter l'admin.`);
-        return of(this.cvService.getFakeCvs());
-      })
-    );
+    const resolvedCvs = this.route.snapshot.data['cvs'] as Cv[];
+    this.cvs$ = of(resolvedCvs);
+
     this.cvService.selectCv$.subscribe((cv) => {
       this.selectedCv = cv;
       // this.router.navigate([this.selectedCv.id], { relativeTo: this.activatedRoute });
       const newUrl = `/cv/list/${this.selectedCv.id}`;
       // Force the router to reload the component by navigating to the same route
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {this.router.navigate([newUrl]);});
+      this.router.navigateByUrl('/',
+        { skipLocationChange: true }).then(() => {this.router.navigate([newUrl]);});
     });
   }
 

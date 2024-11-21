@@ -9,6 +9,7 @@ import { CvCardComponent } from "../cv-card/cv-card.component";
 import { AsyncPipe, DatePipe, UpperCasePipe, CommonModule } from "@angular/common";
 import { EmbaucheComponent } from "../embauche/embauche.component";
 import { AutocompleteComponent } from "../autocomplete/autocomplete.component";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: "app-cv",
@@ -29,6 +30,7 @@ import { AutocompleteComponent } from "../autocomplete/autocomplete.component";
 export class CvComponent {
   private logger = inject(LoggerService);
   private toastr = inject(ToastrService);
+  private route = inject(ActivatedRoute);
   private cvService = inject(CvService);
 
   cvs$: Observable<Cv[]>;
@@ -40,16 +42,8 @@ export class CvComponent {
   activeTab: 'juniors' | 'seniors' = 'juniors';
 
   constructor() {
-    this.cvs$ = this.cvService.getCvs().pipe(
-      shareReplay(1),
-      catchError((e) => {
-        console.log('We are in error');
-        this.toastr.error(`
-          Attention!! Les données sont fictives, problème avec le serveur.
-          Veuillez contacter l'admin.`);
-        return of(this.cvService.getFakeCvs());
-      })
-    );
+    const resolvedCvs = this.route.snapshot.data['cvs'] as Cv[];
+    this.cvs$ = of(resolvedCvs);
 
     this.juniors$ = this.cvs$.pipe(
       map(cvs => cvs.filter(cv => cv.age < 40))
