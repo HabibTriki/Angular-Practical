@@ -1,3 +1,4 @@
+
   import { Component, inject } from '@angular/core';
   import { AuthService } from '../../auth/services/auth.service';
   import { Router, RouterLinkActive, RouterLink } from '@angular/router';
@@ -31,3 +32,4 @@
       this.toastr.warning(`Au plaisir de vous revoir :(`);
     }
   }
+
